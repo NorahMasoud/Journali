@@ -19,7 +19,14 @@ import SwiftUI
 class JournalViewModel: ObservableObject {
     @Published var jurnals: [Journal] = []
     @Published var searchText: String = ""
+    @Published var currentDate: Date = Date()
     @Published var showAddNoteSheet = false //عشان نعرض Sheet لازم نسوي متغير بقيمه بولين عشان تتحكم في ظهورها ونفس الشي عطينا بوبلش عشان نقول للفيو ان صار تغير
+    
+    var currentDateString: String {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd/MM/yyyy"
+            return formatter.string(from: currentDate)
+        }
     
     var filteredJournals: [Journal] {
         if searchText.isEmpty {
@@ -30,6 +37,13 @@ class JournalViewModel: ObservableObject {
             }
         }
     }
+    //هنا نسوي funcراح تستقبل قيمتين
+    func addJournal(title: String, content: String) {
+        //هنا سوينا object من struct Journal وكتبنا ان هو juranal عشان كل قيمه يستقبلها تتخزن في قيم struct
+        let newJournals = Journal(journalTitle: title, journalContent: content) // why is let?
+        jurnals.append(newJournals) //هنا كتبنا هذا السطر عشان يضيف newJournals في مصفوفه jurnals في نهايتها
+    }
+    
     
 }
 

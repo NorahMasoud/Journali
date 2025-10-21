@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MainPage: View {
     @StateObject var viewModel = JournalViewModel()
+    @State private var showNewJournal = false
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -26,15 +28,22 @@ struct MainPage: View {
                                     .foregroundStyle(Color("GlassColor"))
                                     .glassEffect()
                             HStack{
-                                Image(systemName: "line.3.horizontal.decrease")
-                                    .foregroundColor(Color("IconColor"))
-                                    .padding()
-                                Image(systemName: "plus")
-                                    .foregroundColor(Color("IconColor"))
-                                    .padding()
+                                        Image(systemName: "line.3.horizontal.decrease")
+                                               .foregroundColor(Color("IconColor"))
+                                               .padding()
+                                Button{ // عشان نخلي علامه الزايد زر نستخدم داله بوتن
+                                    showNewJournal = true
+                                    
+                                } label: {
+                                    Image(systemName: "plus")
+                                        .foregroundColor(Color("IconColor"))
+                                        .padding()
+                                }
                             }
                         }
-                        
+                        .sheet(isPresented: $showNewJournal){
+                            AddJournal(viewModel: viewModel)
+                        }
                     }
                     Spacer() //حطيت هنا بين عناصر اللي فوق وبين عناصر النص عشان يحط مسافه بينهم
                     
