@@ -19,6 +19,8 @@ import SwiftUI
 class JournalViewModel: ObservableObject {
     @Published var jurnals: [Journal] = []
     @Published var searchText: String = ""
+    @Published var showAddNoteSheet = false //عشان نعرض Sheet لازم نسوي متغير بقيمه بولين عشان تتحكم في ظهورها ونفس الشي عطينا بوبلش عشان نقول للفيو ان صار تغير
+    
     var filteredJournals: [Journal] {
         if searchText.isEmpty {
             return jurnals

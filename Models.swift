@@ -12,5 +12,6 @@ struct Journal: Identifiable {
     let id = UUID()
     var journalTitle: String
     var journalContent: String
+    let date = Date()
     
 }
