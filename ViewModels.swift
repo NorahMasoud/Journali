@@ -20,7 +20,6 @@ class JournalViewModel: ObservableObject {
     @Published var jurnals: [Journal] = []
     @Published var searchText: String = ""
     @Published var currentDate: Date = Date()
-    @Published var showAddNoteSheet = false //عشان نعرض Sheet لازم نسوي متغير بقيمه بولين عشان تتحكم في ظهورها ونفس الشي عطينا بوبلش عشان نقول للفيو ان صار تغير
     
     var currentDateString: String {
             let formatter = DateFormatter()
@@ -43,6 +42,7 @@ class JournalViewModel: ObservableObject {
         let newJournals = Journal(journalTitle: title, journalContent: content) // why is let?
         jurnals.append(newJournals) //هنا كتبنا هذا السطر عشان يضيف newJournals في مصفوفه jurnals في نهايتها
     }
+   
     
     
 }

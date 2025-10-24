@@ -13,10 +13,12 @@ struct Journal: Identifiable {
     var journalTitle: String
     var journalContent: String
     let date = Date()
+    var currentDate: Date = Date()
     
-    var formattedDate: String {
+    var currentDateString: String {
             let formatter = DateFormatter()
             formatter.dateFormat = "dd/MM/yyyy"
-            return formatter.string(from: date)
+            return formatter.string(from: currentDate)
         }
+    
 }

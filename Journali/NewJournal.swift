@@ -3,15 +3,17 @@
 //  Journali
 //
 //  Created by Norah Masoud Aloqayli on 26/04/1447 AH.
-//
+//@ObservedObject var viewModel = JournalViewModel() هنا انا كتبت كود المودل بذي الطريقه طلع انها تسوي نسخه جديده عن حقت الصفحه الرئيسيه
+
 import SwiftUI
 
 struct AddJournal: View {
-    @ObservedObject var viewModel = JournalViewModel()
+    @ObservedObject var viewModel: JournalViewModel
     @State private var title = ""
     @State private var content = ""
     @State var newJournals: Journal?
     @Environment(\.dismiss) var dismiss
+    @State var showCancel = false
     
     var body: some View {
         ZStack {
@@ -20,7 +22,8 @@ struct AddJournal: View {
             VStack {
                 Image(systemName: "minus")
                     .foregroundStyle(Color("ButtonColor"))
-                    .frame(width: 183, height: 6)
+                    .font(.system(size: 50, weight: .medium, design: .default)) //اخترت font عشان مو راضي يضبط معي لما استخدمت frame
+                    .padding()
                     
                 HStack {
                     ZStack {
@@ -29,15 +32,16 @@ struct AddJournal: View {
                             .foregroundStyle(Color("GlassColor"))
                             .glassEffect()
                         Button {
-                            
+                            showCancel = true
                         }label: {
                             Image(systemName: "xmark")
                                 .foregroundColor(Color("IconColor"))
                                 .font(.system(size: 18.64, weight: .medium, design: .default))
                                 .padding()
                         }
+                       
                     }
-                    .padding()
+                   //هذا شرط اذا كان شو كانسل اذا جاط ترو يطلع للمستخدم والعكس
                     Spacer()
                     
                     ZStack {
@@ -56,6 +60,7 @@ struct AddJournal: View {
                     
                     }
                     .padding()
+                    
                    
                 }
                 TextField("Title", text: $title)
@@ -65,15 +70,71 @@ struct AddJournal: View {
                 Text("\(viewModel.currentDateString)")
                     .font(.system(size: 15, weight: .regular, design: .default))
                     .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
                 TextField("Type your journal...", text: $content)
                     .font(.system(size: 20, weight: .regular, design: .default))
                     .foregroundStyle(Color("TextLabel"))
                     .padding()
+                Spacer()
                 
             }
+            if showCancel {
+                            Cancelpop(
+                                viewModel: viewModel,
+                                showCancel: $showCancel,
+                                dismiss: dismiss
+                            )
+                            .transition(.scale)
+                            .zIndex(1) // عشان يطلع فوق المحتوى
+                        }
+            
+         /* if showCancel {
+               ZStack {
+                Image("Square")
+                      .padding()
+                      .frame(width: 310, height: 200)
+                      .cornerRadius(20)
+                      .clipShape(RoundedRectangle(cornerRadius: 25))
+                      .cornerRadius(34)
+                      .glassEffect(.regular.tint(Color.black.opacity(0.1)), in: RoundedRectangle(cornerRadius: 25))
+                      .transition(.scale)
+                    VStack{
+                        Text("Are you sure you want to discard changes on this journal?")
+                            .font(.system(size: 17, weight: .regular))
+                            .foregroundColor(.gray)
+                        Button {
+                            withAnimation(.spring()) {
+                                showCancel = false
+                                   dismiss()
+                               }
+                        } label: {
+                            Text("Discard Changes")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.red)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(.ultraThinMaterial)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                        
+                        Button {
+                            withAnimation(.spring()) {
+                                showCancel = false
+                            }
+                        } label: {
+                            Text("Keep Editing")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(.ultraThinMaterial)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                    }
+                }
+            }*/
+
         }
     }
 }
-#Preview {
-    AddJournal()
- }
