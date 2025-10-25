@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MainPage: View {
     @StateObject var viewModel = JournalViewModel()
+    @State var sortingPop = false
+    
     
     var body: some View {
         NavigationStack {
@@ -27,9 +29,14 @@ struct MainPage: View {
                                     .foregroundStyle(Color("GlassColor"))
                                     .glassEffect()
                             HStack{
-                                        Image(systemName: "line.3.horizontal.decrease")
-                                               .foregroundColor(Color("IconColor"))
-                                               .padding()
+                                Button {
+                                    sortingPop = true
+                                } label: {
+                                    Image(systemName: "line.3.horizontal.decrease")
+                                           .foregroundColor(Color("IconColor"))
+                                           .padding()
+                                }
+                                       
                                 Button{ // عشان نخلي علامه الزايد زر نستخدم داله بوتن
                                     viewModel.showNewJournal = true
                                 } label: {
@@ -50,6 +57,8 @@ struct MainPage: View {
                         }
                     }
                     Spacer() //حطيت هنا بين عناصر اللي فوق وبين عناصر النص عشان يحط مسافه بينهم
+                    
+                    
                     if viewModel.journals.isEmpty{
                         Image("EmptyJournal")
                             .resizable()
@@ -102,6 +111,12 @@ struct MainPage: View {
 
                 }
                 .padding()
+                if sortingPop {
+                        Sortingpop(sortingPop: $sortingPop) // نمررها كـ Binding
+                        .position(x: 260, y: 72)
+                        .transition(.scale)
+                        .zIndex(1)
+                }
             }
         }
     }

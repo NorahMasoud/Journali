@@ -23,7 +23,7 @@ class JournalViewModel: ObservableObject {
     @Published var showNewJournal = false
     @Published var selectedJournal: Journal?
     @Published var showEditSheet = false
-    
+  
     var currentDateString: String {
             let formatter = DateFormatter()
             formatter.dateFormat = "dd/MM/yyyy"
@@ -50,6 +50,18 @@ class JournalViewModel: ObservableObject {
         if let index = journals.firstIndex(where: { $0.id == journal.id }) {
             journals[index].journalTitle = newTitle
             journals[index].journalContent = newContent
+        }
+    }
+    
+    func sortByBookmark() {
+        journals.sort { (first: Journal, second: Journal) in
+            if first.isBookmarked && !second.isBookmarked {
+                return true   // الأول يسبق الثاني
+            } else if !first.isBookmarked && second.isBookmarked {
+                return false  // الثاني يسبق الأول
+            } else {
+                return false  // كلاهما نفس الحالة، ترتيبهم يبقى كما هو
+            }
         }
     }
 }
