@@ -14,6 +14,7 @@ struct AddJournal: View {
     @State var newJournals: Journal?
     @Environment(\.dismiss) var dismiss
     @State var showCancel = false
+    var existingJournal: Journal?
     
     var body: some View {
         ZStack {
@@ -50,7 +51,12 @@ struct AddJournal: View {
                             .foregroundStyle(Color("BottunColor2"))
                             .glassEffect()
                         Button {
-                            
+                            if let journal = existingJournal {
+                                   viewModel.updateJournal(journal, newTitle: title, newContent: content)
+                               } else {
+                                   viewModel.addJournal(title: title, content: content)
+                               }
+                               dismiss()
                         }label: {
                             Image(systemName: "checkmark")
                                 .foregroundColor(Color("IconColor"))
@@ -88,53 +94,61 @@ struct AddJournal: View {
                             .transition(.scale)
                             .zIndex(1) // عشان يطلع فوق المحتوى
                         }
-            
-         /* if showCancel {
-               ZStack {
-                Image("Square")
-                      .padding()
-                      .frame(width: 310, height: 200)
-                      .cornerRadius(20)
-                      .clipShape(RoundedRectangle(cornerRadius: 25))
-                      .cornerRadius(34)
-                      .glassEffect(.regular.tint(Color.black.opacity(0.1)), in: RoundedRectangle(cornerRadius: 25))
-                      .transition(.scale)
-                    VStack{
-                        Text("Are you sure you want to discard changes on this journal?")
-                            .font(.system(size: 17, weight: .regular))
-                            .foregroundColor(.gray)
-                        Button {
-                            withAnimation(.spring()) {
-                                showCancel = false
-                                   dismiss()
-                               }
-                        } label: {
-                            Text("Discard Changes")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.red)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(.ultraThinMaterial)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                        }
-                        
-                        Button {
-                            withAnimation(.spring()) {
-                                showCancel = false
-                            }
-                        } label: {
-                            Text("Keep Editing")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(.ultraThinMaterial)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                        }
-                    }
-                }
-            }*/
-
+        }
+        .onAppear {
+            if let journal = existingJournal {
+                title = journal.journalTitle
+                content = journal.journalContent
+            }
         }
     }
 }
+#Preview {
+    AddJournal(viewModel: JournalViewModel())
+}
+/* if showCancel {
+      ZStack {
+       Image("Square")
+             .padding()
+             .frame(width: 310, height: 200)
+             .cornerRadius(20)
+             .clipShape(RoundedRectangle(cornerRadius: 25))
+             .cornerRadius(34)
+             .glassEffect(.regular.tint(Color.black.opacity(0.1)), in: RoundedRectangle(cornerRadius: 25))
+             .transition(.scale)
+           VStack{
+               Text("Are you sure you want to discard changes on this journal?")
+                   .font(.system(size: 17, weight: .regular))
+                   .foregroundColor(.gray)
+               Button {
+                   withAnimation(.spring()) {
+                       showCancel = false
+                          dismiss()
+                      }
+               } label: {
+                   Text("Discard Changes")
+                       .font(.system(size: 16, weight: .semibold))
+                       .foregroundColor(.red)
+                       .frame(maxWidth: .infinity)
+                       .padding()
+                       .background(.ultraThinMaterial)
+                       .clipShape(RoundedRectangle(cornerRadius: 12))
+               }
+               
+               Button {
+                   withAnimation(.spring()) {
+                       showCancel = false
+                   }
+               } label: {
+                   Text("Keep Editing")
+                       .font(.system(size: 16, weight: .semibold))
+                       .foregroundColor(.white)
+                       .frame(maxWidth: .infinity)
+                       .padding()
+                       .background(.ultraThinMaterial)
+                       .clipShape(RoundedRectangle(cornerRadius: 12))
+               }
+           }
+       }
+   }*/
+

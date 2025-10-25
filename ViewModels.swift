@@ -17,9 +17,12 @@
 import SwiftUI
 
 class JournalViewModel: ObservableObject {
-    @Published var jurnals: [Journal] = []
+    @Published var journals: [Journal] = []
     @Published var searchText: String = ""
     @Published var currentDate: Date = Date()
+    @Published var showNewJournal = false
+    @Published var selectedJournal: Journal?
+    @Published var showEditSheet = false
     
     var currentDateString: String {
             let formatter = DateFormatter()
@@ -29,9 +32,9 @@ class JournalViewModel: ObservableObject {
     
     var filteredJournals: [Journal] {
         if searchText.isEmpty {
-            return jurnals
+            return journals
         } else {
-            return jurnals.filter {
+            return journals.filter {
                 $0.journalTitle.contains(searchText) || $0.journalContent.contains(searchText)
             }
         }
@@ -40,10 +43,14 @@ class JournalViewModel: ObservableObject {
     func addJournal(title: String, content: String) {
         //هنا سوينا object من struct Journal وكتبنا ان هو juranal عشان كل قيمه يستقبلها تتخزن في قيم struct
         let newJournals = Journal(journalTitle: title, journalContent: content) // why is let?
-        jurnals.append(newJournals) //هنا كتبنا هذا السطر عشان يضيف newJournals في مصفوفه jurnals في نهايتها
+        journals.append(newJournals) //هنا كتبنا هذا السطر عشان يضيف newJournals في مصفوفه jurnals في نهايتها
     }
-   
     
-    
+    func updateJournal(_ journal: Journal, newTitle: String, newContent: String) {
+        if let index = journals.firstIndex(where: { $0.id == journal.id }) {
+            journals[index].journalTitle = newTitle
+            journals[index].journalContent = newContent
+        }
+    }
 }
 

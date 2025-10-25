@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MainPage: View {
     @StateObject var viewModel = JournalViewModel()
-    @State private var showNewJournal = false
     
     var body: some View {
         NavigationStack {
@@ -32,33 +31,52 @@ struct MainPage: View {
                                                .foregroundColor(Color("IconColor"))
                                                .padding()
                                 Button{ // عشان نخلي علامه الزايد زر نستخدم داله بوتن
-                                    showNewJournal = true
-                                    
+                                    viewModel.showNewJournal = true
                                 } label: {
                                     Image(systemName: "plus")
                                         .foregroundColor(Color("IconColor"))
                                         .padding()
                                 }
                             }
-                        }
-                        .sheet(isPresented: $showNewJournal){
+                        } //هنا استخذمنا modifier sheet عشان نعرضها كشييت وبعد سوينا binding لل فيو مودل وحددنا بضبط شو نبو جورنل عشان لما تتغير قيمته تظهر على الفيو
+
+                        .sheet(isPresented: $viewModel.showNewJournal){
                             AddJournal(viewModel: viewModel)
+                        } // هنا عشان اظهر محتويات واجهه addjournaal في شاشه المستخدم وربطناها مع الفيو مودل لانه هو المسؤل عن هذا الشي
+                        .sheet(isPresented: $viewModel.showEditSheet) {
+                            if let selectedJournal = viewModel.selectedJournal {
+                                AddJournal(viewModel: viewModel, existingJournal: selectedJournal)
+                            }
                         }
                     }
                     Spacer() //حطيت هنا بين عناصر اللي فوق وبين عناصر النص عشان يحط مسافه بينهم
-                    
-                  Image("EmptyJournal")
-                        .resizable()
-                        .frame(width: 151.39, height: 97.32)
-                        .padding()
-                    Text("Begin Your Journal")
-                        .font(.system(size: 24, weight: .bold, design: .default))
-                        .foregroundColor(Color("FontColor2"))
-                        .padding(.bottom, 10)
-                    Text("Craft your personal diary, tap the \nplus icon to begin")
-                        .font(.system(size: 18, weight: .light, design: .default))
-                        .foregroundColor(Color("FontColor"))
-                        .multilineTextAlignment(.center)
+                    if viewModel.journals.isEmpty{
+                        Image("EmptyJournal")
+                            .resizable()
+                            .frame(width: 151.39, height: 97.32)
+                            .padding()
+                        Text("Begin Your Journal")
+                            .font(.system(size: 24, weight: .bold, design: .default))
+                            .foregroundColor(Color("FontColor2"))
+                            .padding(.bottom, 10)
+                        Text("Craft your personal diary, tap the \nplus icon to begin")
+                            .font(.system(size: 18, weight: .light, design: .default))
+                            .foregroundColor(Color("FontColor"))
+                            .multilineTextAlignment(.center)
+                    } else {
+                        ScrollView {
+                            VStack(spacing: 16){
+                                ForEach(viewModel.journals) { journal in
+                                    Button {
+                                        viewModel.selectedJournal = journal
+                                        viewModel.showEditSheet = true
+                                    } label: {
+                                        JournalCard(journal: journal)
+                                    }
+                                }
+                            }
+                        }
+                    }
                         
                     Spacer() //هنا جطيته بينه وبين عناصر السيرش عشان يعطي مسافه بينهم وبكذه تكون هذي في النص
                     
