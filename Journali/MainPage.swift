@@ -11,7 +11,6 @@ struct MainPage: View {
     @StateObject var viewModel = JournalViewModel()
     @State var sortingPop = false
     
-    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -113,7 +112,7 @@ struct MainPage: View {
                 .padding()
                 if sortingPop {
                         Sortingpop(sortingPop: $sortingPop) // نمررها كـ Binding
-                        .position(x: 260, y: 72)
+                        .position(x: 250, y: 72)
                         .transition(.scale)
                         .zIndex(1)
                 }
