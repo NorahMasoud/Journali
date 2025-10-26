@@ -7,9 +7,10 @@
 import SwiftUI
 
 struct JournalCard: View {
-    
+    @ObservedObject var viewModel: JournalViewModel
     let journal: Journal
-
+    var isBookmarked: Bool
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -18,7 +19,7 @@ struct JournalCard: View {
                     .foregroundColor(Color("FontColor2"))
                 Spacer()
                 Button{
-                    
+                    viewModel.bookMark(for: journal)
                 } label: {
                     Image(systemName: "bookmark")
                         .foregroundColor(Color("FontColor2"))
@@ -41,9 +42,7 @@ struct JournalCard: View {
     }
 }
 
-#Preview {
-    JournalCard(journal: Journal(journalTitle: "Test Title", journalContent: "This is a preview of your journal entry."))
-}
+
 
 /* struct JournalCard: View {
     let journal: Journal

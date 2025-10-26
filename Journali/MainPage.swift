@@ -10,6 +10,7 @@ import SwiftUI
 struct MainPage: View {
     @StateObject var viewModel = JournalViewModel()
     @State var sortingPop = false
+    @State  var isBookmarked: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -79,7 +80,10 @@ struct MainPage: View {
                                         viewModel.selectedJournal = journal
                                         viewModel.showEditSheet = true
                                     } label: {
-                                        JournalCard(journal: journal)
+                                        JournalCard(viewModel: viewModel,
+                                                    journal: journal,
+                                                    isBookmarked: journal.isBookmarked
+                                        )
                                     }
                                 }
                             }
@@ -110,8 +114,12 @@ struct MainPage: View {
 
                 }
                 .padding()
+                //شرط في حال صار ترو يتنفذ الكود اللي داخلها
                 if sortingPop {
-                        Sortingpop(sortingPop: $sortingPop) // نمررها كـ Binding
+                    Sortingpop( sortingPop: $sortingPop,
+                                        sortByBookmark: viewModel.sortByBookmark,
+                                        sortByDate: viewModel.sortByDate // نمررها كـ Binding
+                     ) //هنا استدعنا صفحه سورت بوب اب
                         .position(x: 250, y: 72)
                         .transition(.scale)
                         .zIndex(1)

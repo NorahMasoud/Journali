@@ -64,5 +64,22 @@ class JournalViewModel: ObservableObject {
             }
         }
     }
+    
+    func sortByDate() {
+        journals.sort { (first: Journal, second: Journal) in
+            return first.date > second.date
+        }
+    }
+    //هنا سوينا داله تاخد معطى واحه من نوع Journal (مصفوفه حقت المذكرات)
+    func bookMark (for journal: Journal){
+        if let journaIndex = journals.firstIndex(where: {$0.id == journal.id}) {
+            journals[journaIndex].isBookmarked.toggle()
+        } //طيب هنا لازم نسوي شيك على الاي دي حق المذكره اللي اختارها المستخدم كيف من خلال الكود اللي داخل ايف لت
+        // firstIndex(where: هو داله تساعد في بحقت عن العنصر في المصفوفه من خلال الاي دي
+        // طيب ذحين اذا تحقق الكود اللي داخل if let راح يتنفذ الكود اللي تحت
+        // مصفوفه الجرنل {المذكره اللي اختاره المستخدم}. متغير البوك ماركت عشان هو اللي يعتمد عليه الداله في حل ترو او فولس.toggle هو داله من سويفت تقلب قيمه المتغير من ترو لفوس
+        
+    }
+    
 }
 
