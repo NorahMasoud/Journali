@@ -21,8 +21,8 @@ struct JournalCard: View {
                 Button{
                     viewModel.bookMark(for: journal)
                 } label: {
-                    Image(systemName: "bookmark")
-                        .foregroundColor(Color("FontColor2"))
+                    Image(systemName: journal.isBookmarked ? "bookmark.fill" : "bookmark")
+                        .foregroundColor(journal.isBookmarked ? Color("FontColor2"): Color("FontColor2"))
                 }
             }
             Text(journal.currentDateString) // لازم تكون موجودة في الموديل
