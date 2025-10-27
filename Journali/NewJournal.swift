@@ -25,7 +25,7 @@ struct AddJournal: View {
                     .foregroundStyle(Color("ButtonColor"))
                     .font(.system(size: 50, weight: .medium, design: .default)) //اخترت font عشان مو راضي يضبط معي لما استخدمت frame
                     .padding()
-                    
+                
                 HStack {
                     ZStack {
                         Capsule()
@@ -40,9 +40,9 @@ struct AddJournal: View {
                                 .font(.system(size: 18.64, weight: .medium, design: .default))
                                 .padding()
                         }
-                       
+                        
                     }
-                   //هذا شرط اذا كان شو كانسل اذا جاط ترو يطلع للمستخدم والعكس
+                    //هذا شرط اذا كان شو كانسل اذا جاط ترو يطلع للمستخدم والعكس
                     Spacer()
                     
                     ZStack {
@@ -52,39 +52,55 @@ struct AddJournal: View {
                             .glassEffect()
                         Button {
                             if let journal = existingJournal {
-                                   viewModel.updateJournal(journal, newTitle: title, newContent: content)
-                               } else {
-                                   viewModel.addJournal(title: title, content: content)
-                               }
-                               dismiss()
+                                viewModel.updateJournal(journal, newTitle: title, newContent: content)
+                            } else {
+                                viewModel.addJournal(title: title, content: content)
+                            }
+                            dismiss()
                         }label: {
                             Image(systemName: "checkmark")
                                 .foregroundColor(Color("IconColor"))
                                 .font(.system(size: 18.64, weight: .medium, design: .default))
                                 .padding()
                         }
-                    
+                        
                     }
                     .padding()
                     
-                   
+                    
                 }
                 TextField("Title", text: $title)
-                    .font(.system(size: 34, weight: .bold, design: .default))
-                    .foregroundColor(title.isEmpty ? Color.gray : Color.white)
+                    .font(.system(size: 34, weight: .bold))
+                    .foregroundColor(title.isEmpty ? Color.white : Color.gray)
                     .padding()
                 Text("\(viewModel.currentDateString)")
                     .font(.system(size: 15, weight: .regular, design: .default))
                     .foregroundColor(.gray)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-                TextField("Type your journal...", text: $content)
-                    .font(.system(size: 20, weight: .regular, design: .default))
-                    .foregroundColor(title.isEmpty ? Color.gray : Color.white)
-                    .padding()
-                Spacer()
+                // TextEditor helps to write text in lines
+                // ok, we need to user paceholder but the text editor don't support this so this why we use if ..
                 
+                ZStack(alignment: .topLeading){
+                    if content.isEmpty {
+                        Text("Type your journal...")
+                            .font(.system(size: 20, weight: .regular, design: .default))
+                            .foregroundColor(.gray)
+                            .padding()
+                    }
+                    TextEditor(text: $content)
+                            .foregroundColor(.white)
+                            .font(.system(size: 20))
+                            .padding(4)
+                            .scrollContentBackground(.hidden) // delete the textEditor background
+                            .background(Color.clear)
+                   
+                    
+                }
+
             }
+            Spacer()
+            
             if showCancel {
                             Cancelpop(
                                 viewModel: viewModel,

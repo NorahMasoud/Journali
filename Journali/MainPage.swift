@@ -79,14 +79,19 @@ struct MainPage: View {
                         ScrollView {
                             VStack(spacing: 16){
                                 ForEach(viewModel.filteredJournals) { journal in
-                                    Button {
-                                        viewModel.selectedJournal = journal
-                                        viewModel.showEditSheet = true
-                                    } label: {
+                                    DeleteJournal(
+                                    onDelete: {
+                                    viewModel.deleteJournal(journal)
+                                }
+                            ) {
                                         JournalCard(viewModel: viewModel,
                                                     journal: journal,
                                                     isBookmarked: journal.isBookmarked
                                         )
+                                        .onTapGesture {
+                                        viewModel.selectedJournal = journal
+                                        viewModel.showEditSheet = true
+                                        }
                                     }
                                 }
                             }

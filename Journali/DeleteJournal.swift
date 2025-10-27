@@ -6,7 +6,59 @@
 //
 import SwiftUI
 
-struct DeleteJournal: View {
+
+struct DeleteJournal<Content : View>: View{
+    var onDelete: () -> Void
+        @ViewBuilder var content: () -> Content
+    @State private var offset: CGFloat = 0 //يمثل موضع الكارد يعني 0 هو في المكان الطبيعي لو صار بسالب يعني انسحب لليسار
+    @GestureState private var drag: CGFloat = 0
+    private let maxReveal: CGFloat = 90 //الحد الاقصى للسحب
+    private let trigger: CGFloat = 40 //المسافه
+    
+    var body: some View {
+        //هنا حطينا زي ستاك عشان نبي نحط زر الحذف وراء الكارد
+        ZStack(alignment: .trailing) {
+            Button {
+                withAnimation(.spring(response: 0.25, dampingFraction: 0.9)) { offset = 0 }
+                onDelete()
+            } label: {
+                Circle()
+                    .fill(Color.red)
+                    .frame(width: 48, height: 48)
+                    .overlay(Image(systemName: "trash").font(.headline).foregroundColor(.white))
+                    .shadow(color: .black.opacity(0.25), radius: 8, x: 0, y: 4)
+            }
+            .padding(.trailing, 24)
+            .opacity((offset + drag) < -8 ? 1 : 0)
+            .scaleEffect((offset + drag) < -8 ? 1 : 0.8)
+            
+            content()
+             .offset(x: offset + drag)
+             .gesture(
+                 DragGesture()
+                     .updating($drag) { value, state, _ in
+                         // نسحب الكارد لليسار، state تمثل الحركة اللحظية
+                         state = max(-maxReveal, min(0, value.translation.width))
+                     }
+                     .onEnded { value in
+                         // بعد رفع اليد، نحدد هل يبقى مفتوح أو يرجع مغلق
+                         withAnimation(.spring(response: 0.25, dampingFraction: 0.9)) {
+                             offset = value.translation.width < -trigger ? -maxReveal : 0
+                         }
+                     }
+             )
+            
+             .onTapGesture {
+                    if offset != 0 {
+                    withAnimation(.spring(response: 0.25, dampingFraction: 0.9)) {
+                    offset = 0
+                    }
+                }
+            }
+        }
+    }
+}
+/* struct DeleteJournal: View {
     @ObservedObject var viewModel: JournalViewModel
     @Binding var journalToDelete: Journal?
     @Binding var showDeletePopup: Bool
@@ -61,3 +113,4 @@ struct DeleteJournal: View {
         .foregroundColor(.black)
     }
 }
+*/
