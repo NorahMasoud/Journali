@@ -23,6 +23,7 @@ class JournalViewModel: ObservableObject {
     @Published var showNewJournal = false
     @Published var selectedJournal: Journal?
     @Published var showEditSheet = false
+    @Published var journalToDelete: Journal?
   
     var currentDateString: String {
             let formatter = DateFormatter()
@@ -80,6 +81,8 @@ class JournalViewModel: ObservableObject {
         // مصفوفه الجرنل {المذكره اللي اختاره المستخدم}. متغير البوك ماركت عشان هو اللي يعتمد عليه الداله في حل ترو او فولس.toggle هو داله من سويفت تقلب قيمه المتغير من ترو لفوس
         
     }
-    
+    func deleteJournal(_ journal: Journal) {
+        journals.removeAll { $0.id == journal.id }
+    }
 }
 

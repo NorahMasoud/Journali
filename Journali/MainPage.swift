@@ -11,6 +11,9 @@ struct MainPage: View {
     @StateObject var viewModel = JournalViewModel()
     @State var sortingPop = false
     @State  var isBookmarked: Bool = false
+    @State private var showDeletePopup = false
+    @State private var journalToDelete: Journal?
+
     
     var body: some View {
         NavigationStack {
@@ -75,7 +78,7 @@ struct MainPage: View {
                     } else {
                         ScrollView {
                             VStack(spacing: 16){
-                                ForEach(viewModel.journals) { journal in
+                                ForEach(viewModel.filteredJournals) { journal in
                                     Button {
                                         viewModel.selectedJournal = journal
                                         viewModel.showEditSheet = true

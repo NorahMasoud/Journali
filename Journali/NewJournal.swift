@@ -71,7 +71,7 @@ struct AddJournal: View {
                 }
                 TextField("Title", text: $title)
                     .font(.system(size: 34, weight: .bold, design: .default))
-                    .foregroundStyle(Color("TextLabel"))
+                    .foregroundColor(title.isEmpty ? Color.gray : Color.white)
                     .padding()
                 Text("\(viewModel.currentDateString)")
                     .font(.system(size: 15, weight: .regular, design: .default))
@@ -80,7 +80,7 @@ struct AddJournal: View {
                     .padding()
                 TextField("Type your journal...", text: $content)
                     .font(.system(size: 20, weight: .regular, design: .default))
-                    .foregroundStyle(Color("TextLabel"))
+                    .foregroundColor(title.isEmpty ? Color.gray : Color.white)
                     .padding()
                 Spacer()
                 
