@@ -1,6 +1,6 @@
 Name Project: Journal
 
-Project Description: 
+Project Description:
 Journal is a personal journaling app built with SwiftUI, 
 designed to help users capture and manage their daily thoughts and experiences.
 
