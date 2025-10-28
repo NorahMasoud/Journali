@@ -22,13 +22,13 @@ struct Splash: View {
                         .padding()
                     Text("Journali")
                         .foregroundColor(Color("FontColor"))
-                        .font(.custom("SF Pro", size: 42))
+                        .font(.system(size: 42, weight: .bold, design: .default))
                         .fontWeight(.bold)
                         
                     
                     Text ("Your thoughts, your story")
                         .foregroundColor(Color("FontColor"))
-                        .font(.custom("SF Pro", size: 18))
+                        .font(.system(size: 18, weight: .regular, design: .default))
                         .fontWeight(.light)
                 }
                 .onAppear {
